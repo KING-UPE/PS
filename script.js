@@ -232,5 +232,44 @@
     // INIT
     // ==========================================
     setActiveDot(0);
+    // ==========================================
+    // AUTO-SCROLL LOGIC
+    // ==========================================
+    const autoBtn = document.getElementById('autoScrollBtn');
+    let autoScrollInterval = null;
+
+    if (autoBtn) {
+        autoBtn.addEventListener('click', () => {
+            if (autoScrollInterval) {
+                // Stop scrolling
+                clearInterval(autoScrollInterval);
+                autoScrollInterval = null;
+                autoBtn.classList.remove('active');
+                autoBtn.innerHTML = '&#9660;'; // Down arrow
+            } else {
+                // Start scrolling
+                autoBtn.classList.add('active');
+                autoBtn.innerHTML = '&#10074;&#10074;'; // Pause icon
+                autoScrollInterval = setInterval(() => {
+                    window.scrollBy({ top: 2, behavior: 'auto' });
+                    // Stop if we hit the bottom
+                    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
+                        clearInterval(autoScrollInterval);
+                        autoScrollInterval = null;
+                        autoBtn.classList.remove('active');
+                        autoBtn.innerHTML = '&#9660;';
+                    }
+                }, 16); // ~60fps
+            }
+        });
+
+        // Stop auto-scroll if user manually scrolls with mouse wheel or touch
+        window.addEventListener('wheel', () => {
+            if (autoScrollInterval) autoBtn.click();
+        }, { passive: true });
+        window.addEventListener('touchstart', () => {
+            if (autoScrollInterval) autoBtn.click();
+        }, { passive: true });
+    }
 
 })();
