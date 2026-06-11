@@ -251,7 +251,7 @@
                 autoBtn.classList.add('active');
                 autoBtn.innerHTML = '&#10074;&#10074;'; // Pause icon
                 autoScrollInterval = setInterval(() => {
-                    window.scrollBy({ top: 2, behavior: 'auto' });
+                    window.scrollBy({ top: 4, behavior: 'auto' });
                     // Stop if we hit the bottom
                     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 2) {
                         clearInterval(autoScrollInterval);
